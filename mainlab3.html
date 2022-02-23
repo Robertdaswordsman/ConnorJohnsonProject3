@@ -1,0 +1,67 @@
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Add styles made with Mapbox Studio to a Leaflet map</title>
+        <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+        <script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
+        <link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
+        <style>
+            body { margin:0; padding:0; }
+            #map { position:absolute; top:0; bottom:0; width:100%; }
+        </style>
+    </head>
+    <body>
+    <div id='map'></div>
+
+    <script>
+        var mapboxUrl = 'https://api.mapbox.com/styles/v1/jerrymanderer42/ckzlnurub002f15p7vs6hd77u/tiles/{z}/{x}/{y}?pk.eyJ1IjoiamVycnltYW5kZXJlcjQyIiwiYSI6ImNremo4YXppMTRqajMyb25rNDRvMnZhMnAifQ.BpoTx2aWOalyAGPqEC1QAA'
+        var mapboxAttribution = '© <a href="https://www.mapbox.com/contribute/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        var littleton = L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.'),
+            denver    = L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.'),
+            aurora    = L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.'),
+            golden    = L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.');
+            calgary   = L.marker([51.07, -114.018]).bindPopup('This is Calgary, AB.');
+        var cities = L.layerGroup([littleton, denver, aurora, golden, calgary]);    
+        var grayscale = L.tileLayer(mapboxUrl, {id: 'mapbox/light-v9', tileSize: 512, zoomOffset: -1, attribution: mapboxAttribution}),
+            streets   = L.tileLayer(mapboxUrl, {id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, attribution: mapboxAttribution});
+        var baseMaps = {
+            "Grayscale": grayscale,
+            "Streets": streets
+        };
+
+        var overlayMaps = {
+            "Cities": cities
+        };
+        var baseMaps = {
+        "<span style='color: gray'>Grayscale</span>": grayscale,
+        "Streets": streets
+        };
+        //When I try to use the layers it just doesn't work. I think it's because I already set the atribution, access token, url etc. in the tileset. 
+        //L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+        L.mapbox.accessToken = 'pk.eyJ1IjoiamVycnltYW5kZXJlcjQyIiwiYSI6ImNremo4YXppMTRqajMyb25rNDRvMnZhMnAifQ.BpoTx2aWOalyAGPqEC1QAA';
+ //       var map = L.map('map', {
+ //           center: [51.07, -114.018],
+ //           zoom: 10,
+ //           layers: [grayscale, cities]
+ //       });
+        var map = L.map('map', {
+            center: [51.07, -114.018],
+            zoom: 10,
+        });       
+ //       var map = L.map('map').setView([51.070,-114.018], 10);
+//mapbox://styles/jerrymanderer42/ckzlnurub002f15p7vs6hd77u
+//pk.eyJ1IjoiamVycnltYW5kZXJlcjQyIiwiYSI6ImNrem5sdGl3ZDIxMHMyb3BhM2t0b3Zyc3oifQ.8Z05hV5EIqPyIoF9u0gZrQ
+// Add tiles from the Mapbox Static Tiles API
+// (https://docs.mapbox.com/api/maps/#static-tiles)
+// Tiles are 512x512 pixels and are offset by 1 zoom level
+//https://api.mapbox.com/styles/v1/jerrymanderer42/ckzlnurub002f15p7vs6hd77u.html?title=view&access_token=pk.eyJ1IjoiamVycnltYW5kZXJlcjQyIiwiYSI6ImNremo4YXppMTRqajMyb25rNDRvMnZhMnAifQ.BpoTx2aWOalyAGPqEC1QAA&zoomwheel=true&fresh=true#10.12/51.0703/-114.0178
+        L.tileLayer(
+            'https://api.mapbox.com/styles/v1/jerrymanderer42/ckzlnurub002f15p7vs6hd77u/tiles/{z}/{x}/{y}?access_token=' + L.mapbox.accessToken, {
+                tileSize: 512,
+                zoomOffset: -1,
+                attribution: '© <a href="https://www.mapbox.com/contribute/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+    </script>
+    </body>
+</html>
